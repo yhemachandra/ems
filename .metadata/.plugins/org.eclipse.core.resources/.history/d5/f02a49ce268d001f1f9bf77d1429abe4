@@ -1,0 +1,55 @@
+<%@page import="java.sql.DriverManager"%>
+<%@page import="java.sql.ResultSet"%>
+<%@page import="java.sql.PreparedStatement"%>
+<%@page import="java.sql.Connection"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Home Page</title>
+</head>
+<body>
+	<%
+	Connection c = null;
+	PreparedStatement ps = null;
+	ResultSet rs = null;
+	try {
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		c = DriverManager.getConnection("jdbc:mysql://localhost:3306/ems", "root", "root");
+		ps = c.prepareStatement("select * from emp");
+		rs = ps.executeQuery();
+	} catch (Exception e) {
+		e.printStackTrace();
+	} 
+	%>
+	<h1>Welcome to emp Home Page </h1>
+	<table>
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th>email</th>
+				<th>salary</th>
+				<th>Dno</th>
+				<th>action</tph>
+				
+			</tr>
+		</thead>
+		<tbody>
+			<%
+			while(rs.next())
+			{
+			%>
+			<tr>
+				<td><%= rs.getString(1) %></td>
+				<td><%= rs.getString(2) %></td>
+				<td><%= rs.getDouble(3) %></td>
+				<td><%= rs.getInt(4) %></td>
+				<td><%= rs.getString(5) %></td>
+			</tr>
+			<%} %>
+		</tbody>
+	</table>
+</body>
+</html>
